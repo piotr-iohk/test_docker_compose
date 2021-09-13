@@ -26,9 +26,11 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Prepare MacOS
-        run: brew install docker docker-compose
+        run: |
+          brew install docker-machine docker docker-compose
+          sudo docker --version
 
       - name: Run a multi-line script
         run: |
-          wget https://github.com/input-output-hk/cardano-wallet/blob/master/docker-compose.yml
+          wget https://raw.githubusercontent.com/input-output-hk/cardano-wallet/master/docker-compose.yml
           NETWORK=testnet docker-compose up
