@@ -18,17 +18,21 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: macos-latest
+    runs-on: macos-11
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
+      - uses: docker-practice/actions-setup-docker@1.0.8
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.1
       - name: Prepare MacOS
-        run: brew install docker docker-compose
+        run: gem install cardano_wallet
 
-      - name: Run a multi-line script
+      - name: Check docker-compose
         run: |
-          wget https://github.com/input-output-hk/cardano-wallet/blob/master/docker-compose.yml
-          NETWORK=testnet docker-compose up
+          wget https://raw.githubusercontent.com/input-output-hk/cardano-wallet/master/docker-compose.yml
+          NETWORK=testnet docker-compose up -d
+          ./scripts/connect_wallet.rb
