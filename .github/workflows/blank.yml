@@ -25,7 +25,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a set of commands using the runners shell
+      - name: Prepare MacOS
+        run: brew install docker docker-compose
+
       - name: Run a multi-line script
         run: |
           wget https://github.com/input-output-hk/cardano-wallet/blob/master/docker-compose.yml
