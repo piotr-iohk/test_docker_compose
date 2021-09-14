@@ -1,10 +1,13 @@
 name: Docker-compose Linux
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  schedule:
+  - cron:  "0 23 * * *"
   workflow_dispatch:
+    inputs:
+      network:
+        description: 'NETWORK'
+        required: true
+        default: 'testnet'
 
 jobs:
   build:
@@ -22,5 +25,7 @@ jobs:
       - name: Check docker-compose
         run: |
           wget https://raw.githubusercontent.com/input-output-hk/cardano-wallet/master/docker-compose.yml
-          NETWORK=testnet docker-compose up -d
+          docker-compose up -d
           ./scripts/connect_wallet.rb
+        env:
+          NETWORK: ${{ github.event.inputs.network || 'testnet' }}
