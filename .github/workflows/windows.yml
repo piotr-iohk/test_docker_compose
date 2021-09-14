@@ -1,4 +1,4 @@
-name: Docker-compose Linux
+name: Docker-compose Windows
 on:
   push:
     branches: [ master ]
@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-18.04]
+        os: [windows-latest, windows-2022]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -22,5 +22,7 @@ jobs:
       - name: Check docker-compose
         run: |
           wget https://raw.githubusercontent.com/input-output-hk/cardano-wallet/master/docker-compose.yml
-          NETWORK=testnet docker-compose up -d
+          docker-compose up -d
           ./scripts/connect_wallet.rb
+        env:
+          NETWORK: testnet
